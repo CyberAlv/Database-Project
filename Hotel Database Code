@@ -1,0 +1,203 @@
+CREATE DATABASE Hotel_Project;
+CREATE TABLE Hotel(
+	NAME VARCHAR(20) NOT NULL,
+	Address VARCHAR(70) NOT NULL,
+	Phone_No VARCHAR(15) NOT NULL,
+	Hotel_ID VARCHAR(3) NOT NULL,
+	PRIMARY KEY(Hotel_ID)
+); CREATE TABLE Room(
+	Room_No VARCHAR(2) NOT NULL,
+	Room_Type VARCHAR(10) NOT NULL,
+	Hotel_ID VARCHAR(3),
+	Room_ID VARCHAR(3),
+	Price_Rate DECIMAL(10, 2) NOT NULL,
+	STATUS VARCHAR
+    	(10),
+    	PRIMARY KEY(Room_ID),
+    	FOREIGN KEY(Hotel_ID) REFERENCES Hotel(Hotel_ID)
+);
+CREATE TABLE Reservation(
+	Confirmation_No VARCHAR(10) NOT NULL,
+	No_of_Guest INT,
+	Check_In VARCHAR(15) NOT NULL,
+	Check_Out VARCHAR(15) NOT NULL,
+	Room_No VARCHAR(2) NOT NULL,
+	Room_ID VARCHAR(3) NOT NULL,
+	PRIMARY KEY(Confirmation_No),
+	FOREIGN KEY(Room_ID) REFERENCES Room(Room_ID)
+); CREATE TABLE Payment(
+	Bill_No VARCHAR(10) NOT NULL,
+	Confirmation_No VARCHAR(10) NOT NULL,
+	Credit_Card_No INT(9) NOT NULL,
+	Payment_Date VARCHAR(20) NOT NULL,
+	PRIMARY KEY(Bill_No),
+	UNIQUE(Confirmation_No),
+	FOREIGN KEY(Confirmation_No) REFERENCES Reservation(Confirmation_No)
+); CREATE TABLE Guest(
+	Guest_ID VARCHAR(10) NOT NULL,
+	First_Name VARCHAR(15) NOT NULL,
+	Last_Name VARCHAR(15) NOT NULL,
+	Guest_Age VARCHAR(2) NOT NULL,
+	Address VARCHAR(100) NOT NULL,
+	Room_Type VARCHAR(10) NOT NULL,
+	Confirmation_No VARCHAR(10) NOT NULL,
+	PRIMARY KEY(Guest_ID),
+	FOREIGN KEY(Confirmation_No) REFERENCES Reservation(Confirmation_No)
+)
+
+
+INSERTION CODE:
+
+INSERT INTO hotel
+VALUES(
+	'The Plaza',
+	'768 5th Ave New York, NY, 10019',
+	'1-212-759-3000',
+	'TP1'
+),(
+	'The Tipton Hotel',
+	'P Sherman 42 Wallaby Way, Sydney, AU',
+	'1-347-949-9850',
+	'P42'
+),(
+	'The Continental',
+	'2 South William Street Court, NEW York, NY, 10005',
+	'1-212344-0208',
+	'JWT'
+);
+
+INSERT INTO room
+VALUES(
+	'01',
+	'Single',
+	'JWT',
+	'S01',
+	'80.50',
+	'Occupied'
+),(
+	'49',
+	'Double',
+	'P42',
+	'D02',
+	'449',
+	'Occupied'
+),(
+	'23',
+	'Junior',
+	'TP1',
+	'JW1',
+	'549',
+	'Vacant'
+),(
+	'02',
+	'Single',
+	'P42',
+	'S02',
+	'100.33',
+	'Vacant'
+),(
+	'05',
+	'Junior',
+	'JWT',
+	'J05',
+	'505.45',
+	'Vacant'
+);
+INSERT INTO reservation
+VALUES(
+	'987456123',
+	'1',
+	'Sept 12, 2019',
+	'Sept 20, 2019',
+	'01',
+	'S01'
+),(
+	'879136802',
+	'2',
+	'Aug 08, 2018',
+	'Aug 20, 2019',
+	'49',
+	'D02'
+),(
+	'9987456210',
+	'3',
+	'Jan 3 2017',
+	'Jan 9 2017',
+	'23',
+	'JW1'
+);
+INSERT INTO guest
+VALUES(
+	'123456789',
+	'John',
+	'Wick',
+	'42',
+	'12397 Winston St. New York, NY,10003',
+	'Single',
+	'987456123'
+),(
+	'6666666521',
+	'Dwayne',
+	'Johnson',
+	'48',
+	'8820 Wilshire Blvd Suite 220 Beverly Hills, CA 90211-2618 USA',
+	'Double',
+	'879136802'
+),(
+	'119782135',
+	'Michael',
+	'Jordan',
+	'57',
+	'2700 Point Lane Highland Park, IL',
+	'Junior',
+	'9987456210');
+INSERT INTO payment
+VALUES(
+	'345697123',
+	'987456123',
+	'654789321',
+	'Sept 12, 2019'
+),(
+	'1788965431',
+	'879136802',
+	'369852147',
+	'Aug 8, 2018'
+),(
+	'1127945613',
+	'9987456210',
+	'309781456',
+	'Jan 4, 2017'
+)
+
+
+
+
+
+
+MODIFY CODE:
+
+UPDATE
+	room
+SET
+STATUS
+	= 'Occupied'
+WHERE
+	room.Room_ID = 'JW1';
+
+
+DELETE CODE:
+
+DELETE
+FROM
+	guest
+WHERE
+	guest.Guest_ID = '119782135'
+
+SAMPLE SQL RETRIEVAL CODE:
+
+SELECT DISTINCT
+	Room_Type,
+	Room_No
+FROM
+	room,
+	hotel
